@@ -102,7 +102,19 @@ namespace Basic
 
             List<int> result = operation.OddNumbers(5, 10);
 
-            Assert.That(oddNumbersExpect, Is.EquivalentTo(result));
+            Assert.Multiple(() =>
+            {
+                Assert.That(oddNumbersExpect, Is.EquivalentTo(result));
+                Assert.AreEqual(oddNumbersExpect, result);
+                Assert.That(result, Does.Contain(5));
+                Assert.Contains(5, result);
+                Assert.That(result, Is.Not.Empty);
+                Assert.That(result.Count, Is.EqualTo(3));
+                Assert.That(result, Has.No.Member(70));
+                Assert.That(result, Is.Ordered.Ascending);
+                Assert.That(result, Is.Unique);
+            });         
+
         }
     }
 }
