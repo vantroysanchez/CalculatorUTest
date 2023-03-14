@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace Basic
 {
-    public class Person
+    public class Person: IPerson
     {
         public string Name { get; set; }
-        public int Discount = 10;
+        public int Discount { get; set; }
         public int OrderTotal { get; set; }
+
+        public bool IsPremium { get; set; }
+
+        public Person()
+        {
+            IsPremium = false;
+            Discount = 10;
+        }
+
         public string FullName(string name, string lastName)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -30,13 +39,13 @@ namespace Basic
             {
                 return new BasicPerson();
             }
-            return new PremiunPerson();
+            return new PremiumPerson();
 
         }
     }
 
     public class PersonType { }
-    public class PremiunPerson : PersonType { }
+    public class PremiumPerson : PersonType { }
     public class BasicPerson: PersonType { }
 
 }

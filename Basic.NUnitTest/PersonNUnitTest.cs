@@ -78,7 +78,7 @@ namespace Basic
             person.OrderTotal = 750;
             var result = person.PersonDetails();
 
-            Assert.That(result, Is.TypeOf<PremiunPerson>());
+            Assert.That(result, Is.TypeOf<PremiumPerson>());
         }
     }
 }
