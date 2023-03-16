@@ -1,33 +1,28 @@
 ﻿using Moq;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Basic
 {
-    [TestFixture]
-    public class BankAccountNUnitTest
-    {
-        [SetUp]
-        public void Setup()
-        {
-            
-        }
+    
+    public class BankAccountXUnitTest
+    { 
 
-        [Test]
+        [Fact]
         public void DepositWithFake()
         {
             BankAccount bankAccount = new BankAccount(new LoggerGeneralFake());
             var result = bankAccount.Deposit(100);
 
-            Assert.IsTrue(result);
-            Assert.That(bankAccount.BalanceAccount, Is.EqualTo(100));
+            Assert.True(result);
+            Assert.Equal(100, bankAccount.BalanceAccount());
         }
 
-        [Test]
+        [Fact]
         public void Deposit()
         {
             //1. Arrange
@@ -38,13 +33,13 @@ namespace Basic
             var result = bankAccount.Deposit(100);
 
             //3. Assert
-            Assert.IsTrue(result);
-            Assert.That(bankAccount.BalanceAccount, Is.EqualTo(100));
+            Assert.True(result);
+            Assert.Equal(100, bankAccount.BalanceAccount());
         }
 
-        [Test]
-        [TestCase(200, 100)]
-        [TestCase(200, 150)]
+        [Theory]
+        [InlineData(200, 100)]
+        [InlineData(200, 150)]
         public void WithdrawalWithMayorBalance(int balance, int withdrawal)
         {
             //1. Arrange
@@ -61,11 +56,11 @@ namespace Basic
             var result = bankAccount.Withdrawal(withdrawal);
 
             //3. Assert
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
-        [TestCase(200, 400)]
+        [Theory]
+        [InlineData(200, 400)]
         public void WithdrawalWithMinorBalance(int balance, int withdrawal)
         {
             //1. Arrange
@@ -81,10 +76,10 @@ namespace Basic
             var result = bankAccount.Withdrawal(withdrawal);
 
             //3. Assert
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void BankAccountLoggerGeneral()
         {
             var loggerGeneralFake = new Mock<ILoggerGeneral>();
@@ -95,10 +90,10 @@ namespace Basic
 
             var result = loggerGeneralFake.Object.MessageString("Hola Mundo");
 
-            Assert.That(result, Is.EqualTo(TextString));
+            Assert.Equal(TextString, result);
         }
 
-        [Test]
+        [Fact]
         public void BankAccountLoggerGeneralLogOutput()
         {
             var loggerGeneral = new Mock<ILoggerGeneral>();
@@ -111,10 +106,10 @@ namespace Basic
 
             var result = loggerGeneral.Object.MessageReturnString("Vantroy", out outParameter);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void BankAccountLoggerGeneralReference()
         {
             var loggerGeneral = new Mock<ILoggerGeneral>();
@@ -124,11 +119,11 @@ namespace Basic
 
             loggerGeneral.Setup(x => x.MessageReturnReference(ref person)).Returns(true);
 
-            Assert.IsTrue(loggerGeneral.Object.MessageReturnReference(ref person));
-            Assert.IsFalse(loggerGeneral.Object.MessageReturnReference(ref personNotUsed));
+            Assert.True(loggerGeneral.Object.MessageReturnReference(ref person));
+            Assert.False(loggerGeneral.Object.MessageReturnReference(ref personNotUsed));
         }
 
-        [Test]
+        [Fact]
         public void BankAccountLoggerGeneralLogMocking()
         {
             var loggerGeneral = new Mock<ILoggerGeneral>();
@@ -139,8 +134,8 @@ namespace Basic
 
             loggerGeneral.Object.LoggerPriority = 100;
 
-            Assert.That(loggerGeneral.Object.LoggerType, Is.EqualTo("Warning"));
-            Assert.That(loggerGeneral.Object.LoggerPriority, Is.EqualTo(10));
+            Assert.Equal("Warning", loggerGeneral.Object.LoggerType);
+            Assert.Equal(10, loggerGeneral.Object.LoggerPriority);
 
             //Callbacks
 
@@ -151,10 +146,10 @@ namespace Basic
 
             loggerGeneral.Object.LogDatabase("Sanchez");
 
-            Assert.That(text, Is.EqualTo("Vantroy Sanchez"));
+            Assert.Equal("Vantroy Sanchez", text);
         }
 
-        [Test]       
+        [Fact]       
         public void BankAccountLoggerGeneralVerifyExecution()
         {
             var loggerGeneralMock = new Mock<ILoggerGeneral>();
@@ -163,7 +158,7 @@ namespace Basic
 
             bankAccount.Deposit(100);
             
-            Assert.That(bankAccount.BalanceAccount, Is.EqualTo(100));
+            Assert.Equal(100, bankAccount.BalanceAccount());
 
             //Verificar las veces que el mock está llamando al metodo message
             loggerGeneralMock.Verify(x => x.Message(It.IsAny<string>()), Times.Exactly(3));

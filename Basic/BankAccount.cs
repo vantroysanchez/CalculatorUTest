@@ -20,6 +20,13 @@ namespace Basic
         public bool Deposit(int amount)
         {
             _loggerGeneral.Message("Ha realizado un deposito de: " + amount.ToString());
+            _loggerGeneral.Message("Transacción finalizada");
+            _loggerGeneral.Message("Gracias por utilizar nuestros servicios");
+
+            _loggerGeneral.LoggerPriority = 100;
+
+            var priority = _loggerGeneral.LoggerPriority;
+
             Balance += amount;
             return true;
         }

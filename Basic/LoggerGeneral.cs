@@ -8,6 +8,9 @@ namespace Basic
 {
     public class LoggerGeneral : ILoggerGeneral
     {
+        public int LoggerPriority { get; set; }
+        public string LoggerType { get; set; }
+
         public bool LogBalanceAfterWithdrawal(int balanceAfter)
         {
             if (balanceAfter >= 0)
@@ -29,6 +32,11 @@ namespace Basic
         public void Message(string message)
         {
             Console.WriteLine(message);
+        }
+
+        public bool MessageReturnReference(ref Person person)
+        {
+            return true;
         }
 
         public bool MessageReturnString(string message, out string outputText)
